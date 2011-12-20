@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.version = ::Forem.version
 
   s.add_development_dependency 'launchy'
-  s.add_development_dependency 'rspec-rails', '~> 2.6'
+  s.add_development_dependency 'rspec-rails', '~> 2.8.0.rc2'
   s.add_development_dependency 'capybara'
   s.add_development_dependency 'factory_girl_rails', '>= 1.2.0'
   s.add_development_dependency 'database_cleaner'
