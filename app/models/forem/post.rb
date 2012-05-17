@@ -13,7 +13,8 @@ module Forem
     delegate :forum, :to => :topic
 
     scope :by_created_at, order_by([[:created_at, :asc]])
-
+    scope :latest_first, order_by([[:created_at, :desc]])
+    
     validates :text, :presence => true
 #  	after_create :subscribe_replier
 #  	after_create :email_topic_subscribers
