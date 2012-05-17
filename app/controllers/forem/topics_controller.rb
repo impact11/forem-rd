@@ -8,7 +8,7 @@ module Forem
       if find_topic
         register_view
         @group = Group.where(:forum_id => @forum.id).first 
-        @posts = @topic.posts.page(params[:page]).per(20)
+        @posts = @topic.posts.latest_first.page(params[:page]).per(20)
       end
     end
 
