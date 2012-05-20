@@ -5,7 +5,6 @@ module Forem
     before_filter :find_forum
 
     def show
-      puts "IM BEING CALLED"
       if find_topic
         register_view
         @group = Group.where(:forum_id => @forum.id).first 
