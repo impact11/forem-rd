@@ -26,7 +26,6 @@ module Forem
     def last_visible_post
       visible_topics = self.topics.where(:hidden => false)
       visible_posts = Post.where(:topic_id.in => visible_topics.map(&:id))
-      puts visible_posts.order_by([[:created_at, :desc]]).entries.inspect
       visible_posts.order_by([[:created_at, :desc]]).first
     end
   end

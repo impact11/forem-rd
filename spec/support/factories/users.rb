@@ -8,6 +8,7 @@ FactoryGirl.define do
     factory :admin do |f|
       f.forem_admin true
     end
+    
   end
 end
 

@@ -7,6 +7,10 @@ module Forem
     embedded_in :topic, :class_name => 'Forem::Topic'
     belongs_to :user, :class_name => Forem.user_class.to_s
 
-    validates :topic_id, :presence => true
+ #   validates :topic_id, :presence => true
+    def increment!(fieldname)
+      self.inc(fieldname.to_sym, 1)
+    end
+    
   end
 end

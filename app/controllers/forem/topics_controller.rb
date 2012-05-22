@@ -69,7 +69,7 @@ module Forem
         scope = forem_admin? ? @forum.topics : @forum.topics.visible
         @topic = scope.find(params[:id])
         authorize! :read, @topic
-      rescue ActiveRecord::RecordNotFound
+      rescue Mongoid::Errors::DocumentNotFound
         flash.alert = t("forem.topic.not_found")
         redirect_to @forum and return
       end
