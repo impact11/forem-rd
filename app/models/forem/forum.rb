@@ -17,16 +17,39 @@ module Forem
     #  # TODO: this is probably a bad idea
     #  self.all.map(&:topics).flatten.map(&:posts).flatten
     #end
+    
+    def visible_topics(forem_user = nil)
+      if forem_user && forem_user.forem_admin?
+        topics = self.topics
+      else
+        topics = self.topics.where(:hidden => false)
+      end      
+    end
+
+    def posts(forem_user = nil)
+      visible_posts(forem_user)      
+    end
+    
+    def views(forem_user = nil)
+      visible_views(forem_user)
+    end
+    
+    def visible_posts(forem_user = nil)
+      posts = Post.where(:topic_id.in => visible_topics(forem_user).map(&:id))
+    end
+
+    def visible_views(forem_user = nil)
+      topics = visible_topics(forem_user)
+      views = View.where(:topic_id.in => visible_topics(forem_user).map(&:id)).sum(:count)
+    end
+
 
     def last_post_for(forem_user)
-      last_post = self.topics.order_by([['posts.created_at', :desc]]).first.posts.first
-      forem_user && forem_user.forem_admin? ? last_post : last_visible_post
+      last_post = visible_posts(forem_user).order_by([['created_at', :desc]]).first
     end
 
     def last_visible_post
-      visible_topics = self.topics.where(:hidden => false)
-      visible_posts = Post.where(:topic_id.in => visible_topics.map(&:id))
-      visible_posts.order_by([[:created_at, :desc]]).first
+      last_post = visible_posts.order_by([['created_at', :desc]]).first
     end
   end
 end
