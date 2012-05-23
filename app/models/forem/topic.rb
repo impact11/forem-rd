@@ -55,13 +55,13 @@ module Forem
     end
 
     def view_for(user)
-      views.find_by_user_id(user.id)
+      views.all.where(user: user).first
     end
 
     # Track when users last viewed topics
     def register_view_by(user)
       if user
-        view = views.find_or_create_by(user: user)
+        view = view_for(user) || views.build(user: user)
         view.increment!("count")
       end
     end
@@ -87,6 +87,10 @@ module Forem
 		def subscription_for user_id
 			subscriptions.first(:conditions => { :subscriber_id=>user_id })
 		end
+
+    def toggle!(field)
+      send "#{field}=", !self.send("#{field}?")
+    end
 
     protected
     def set_first_post_user

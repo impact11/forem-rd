@@ -4,6 +4,12 @@ GIT
   specs:
     forem-theme-base (0.0.1)
 
+GIT
+  remote: git://github.com/rspec/rspec-mocks.git
+  revision: aca2b40e25aabe010273e47c52a85b9832cfe3aa
+  specs:
+    rspec-mocks (2.10.1)
+
 PATH
   remote: .
   specs:
@@ -147,7 +153,6 @@ GEM
     rspec-core (2.10.1)
     rspec-expectations (2.10.0)
       diff-lcs (~> 1.1.3)
-    rspec-mocks (2.10.1)
     rspec-rails (2.10.1)
       actionpack (>= 3.0)
       activesupport (>= 3.0)
@@ -195,4 +200,5 @@ DEPENDENCIES
   jquery-rails
   launchy
   rails (~> 3.1)
-  rspec-rails (~> 2.6)
+  rspec-mocks!
+  rspec-rails (~> 2.10.1)

@@ -30,19 +30,19 @@ module Forem
       visible_posts(forem_user)      
     end
     
-    def views(forem_user = nil)
-      visible_views(forem_user)
+    # Since Views is embedded inside Topic, and topic is a relation across Forums 
+    # we cannot perform the necessary aggregate functions across Views to get count
+    # of views for all topics in forum. Must do manually.
+    def views_count(forem_user = nil)
+      views = 0   
+      self.topics.each do |topic|
+        views += topic.views.where(:topic_id.in => visible_topics(forem_user).map(&:id) ).sum(:count)
+      end    
     end
     
     def visible_posts(forem_user = nil)
       posts = Post.where(:topic_id.in => visible_topics(forem_user).map(&:id))
     end
-
-    def visible_views(forem_user = nil)
-      topics = visible_topics(forem_user)
-      views = View.where(:topic_id.in => visible_topics(forem_user).map(&:id)).sum(:count)
-    end
-
 
     def last_post_for(forem_user)
       last_post = visible_posts(forem_user).order_by([['created_at', :desc]]).first

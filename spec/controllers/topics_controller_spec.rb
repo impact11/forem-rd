@@ -9,7 +9,7 @@ describe Forem::TopicsController do
 
       controller.should_receive(:authorize!).and_return(true)
       Forem::Forum.should_receive(:find).and_return(forum)
-      forum.stub_chain("topics.visible.find").and_raise(Mongoid::Errors::DocumentNotFound)
+      forum.stub_chain("topics.visible.find").and_raise(Mongoid::Errors::DocumentNotFound.new(Forem::Forum, :hidden => false))
     end
 
     # Regression test for #122

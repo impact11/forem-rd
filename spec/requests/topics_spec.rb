@@ -106,7 +106,7 @@ describe "topics" do
         it "creates a view" do
           lambda do
             visit forum_topic_path(forum, topic)
-          end.should change(Forem::View, :count).by(1)
+          end.should change(topic.views, :count).by(1)
         end
 
         it "increments a view" do
@@ -123,7 +123,7 @@ describe "topics" do
           # 
           # But instead must go long-form:
 
-          view = ::Forem::View.last
+          view = topic.views.last
           view.count.should eql(1)
           visit forum_topic_path(forum, topic)
           view.reload.count.should eql(2)
