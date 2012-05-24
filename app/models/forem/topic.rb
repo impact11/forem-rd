@@ -14,7 +14,7 @@ module Forem
     embeds_many :views, :class_name => 'Forem::View'
     embeds_many :subscriptions, :class_name => 'Forem::Subscription'
 
-    has_many :posts, :class_name => 'Forem::Post'
+    has_many :posts, :class_name => 'Forem::Post', autosave: true
     accepts_nested_attributes_for :posts
 
     validates :subject, :presence => true
@@ -55,13 +55,16 @@ module Forem
     end
 
     def view_for(user)
-      views.all.where(user: user).first
+      views.all.where(user_id: user.id).first
     end
 
     # Track when users last viewed topics
     def register_view_by(user)
       if user
-        view = view_for(user) || views.build(user: user)
+        view = view_for(user) 
+        if view.nil?
+          view = views.build(user: user)
+        end
         view.increment!("count")
       end
     end

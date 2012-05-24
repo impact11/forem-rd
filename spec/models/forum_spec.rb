@@ -35,22 +35,20 @@ describe Forem::Forum do
   describe "helper methods" do
     # Regression tests + tests related to fix for #42
     context "last_post" do
-      let!(:visible_topic) { FactoryGirl.create(:topic, :subject => "Visible", :forum => @forum) }
-      let!(:hidden_topic) { FactoryGirl.create(:topic, :subject => "Hidden",  :forum => @forum, :hidden => true) }
 
-      let!(:visible_post) {FactoryGirl.create(:post, :topic => visible_topic, :text => "Visible", :created_at => 10.seconds.ago)}
-      let!(:hidden_post) {FactoryGirl.create(:post, :topic => hidden_topic, :text => "Hidden",  :created_at => 3.seconds.ago)}
+      let!(:visible_topic) { Fabricate(:topic, :forum => @forum) }
+      let!(:hidden_topic) { Fabricate(:topic, :forum => @forum, :hidden => true) }
 
       let(:user) { Fabricate(:user) }
       let(:admin) { Fabricate(:admin) }
 
       it "finds the last visible post" do
-        @forum.last_visible_post.should == visible_post
+        @forum.last_visible_post.should == visible_topic.posts.last
       end
 
       it "finds the last visible post for a user" do
-        @forum.last_post_for(user).should == visible_post
-        @forum.last_post_for(admin).should == hidden_post
+        @forum.last_post_for(user).should == visible_topic.posts.last
+        @forum.last_post_for(admin).should == hidden_topic.posts.first
       end
     end
 

@@ -21,7 +21,9 @@ module Forem
     def visible_topics(forem_user = nil)
       if forem_user && forem_user.forem_admin?
         topics = self.topics
+        topics = self.topics
       else
+        topics = self.topics.where(:hidden => false)
         topics = self.topics.where(:hidden => false)
       end      
     end
@@ -45,7 +47,8 @@ module Forem
     end
 
     def last_post_for(forem_user)
-      last_post = visible_posts(forem_user).order_by([['created_at', :desc]]).first
+      last_post = visible_posts(forem_user).order_by([[:created_at, :desc], [:_id, :desc]]).first
+      last_post
     end
 
     def last_visible_post
