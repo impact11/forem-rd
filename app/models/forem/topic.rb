@@ -60,7 +60,6 @@ module Forem
 
     # Track when users last viewed topics
     def register_view_by(user)
-      puts "REGISTERING"
       if user
         view = view_for(user) 
         if view.nil?
@@ -68,7 +67,6 @@ module Forem
         end
         view.increment!("count")
         view.save
-        puts "VIEWS: #{self.views.count}"
       end
     end
     
