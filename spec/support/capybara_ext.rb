@@ -2,7 +2,7 @@ module CapybaraExt
   # Just a shorter way of writing it.
   def assert_seen(text, opts={})
     if opts[:within]
-      within(selector_for(opts[:within])) do
+      within(selector_for(*opts[:within])) do
         page.should have_content(text)
       end
     else

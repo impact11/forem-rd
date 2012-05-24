@@ -27,7 +27,7 @@ describe "posts" do
 
     context "replying" do
       before do
-        within(selector_for(:first_post)) do
+        within(selector_for(:post_id, topic.posts.first.id)) do
           click_link("Reply")
         end
       end
@@ -37,7 +37,7 @@ describe "posts" do
           fill_in "Text", :with => "Witty and insightful commentary."
           click_button "Post Reply"
           flash_notice!("Your reply has been posted.")
-          assert_seen("In reply to #{topic.posts.first.user.login}", :within => :second_post)
+          assert_seen("In reply to #{topic.posts.first.user.login}", :within => [:post_id, topic.posts[1].id])
           click_link "Welcome to Forem!"
         end
       end
@@ -67,6 +67,7 @@ describe "posts" do
 
     context "editing posts in topics" do
       before do
+        sign_out
         sign_in(user)
         topic.posts << FactoryGirl.create(:post, :user => FactoryGirl.create(:user, :login => 'other_forem_user', :email => "maryanne@boblaw.com"))
         second_post = topic.posts[1]
@@ -74,7 +75,7 @@ describe "posts" do
 
       it "can edit their own post" do
         visit forum_topic_path(forum, topic)
-        within(selector_for(:first_post)) do
+        within(selector_for(:post_id, topic.posts.first.id)) do
             click_link("Edit")
         end
         fill_in "Text", :with => "this is my edit"
@@ -93,14 +94,14 @@ describe "posts" do
 
       it "should not display edit link on posts you don't own" do
         visit forum_topic_path(forum, topic)
-        within(selector_for(:second_post)) do
+        within(selector_for(:post_id, topic.posts.last.id)) do
           page.should have_no_content("Edit")
         end
       end
 
       it "should display edit link on posts you own" do
         visit forum_topic_path(forum, topic)
-        within(selector_for(:first_post)) do
+        within(selector_for(:post_id, topic.posts.first.id)) do
           page.should have_content("Edit")
         end
       end
@@ -108,6 +109,7 @@ describe "posts" do
 
     context "deleting posts in topics" do
       before do
+        sign_out
         sign_in(user)
       end
 
@@ -130,7 +132,7 @@ describe "posts" do
 
         it "can delete their own post" do
           visit forum_topic_path(forum, topic)
-          within(selector_for(:first_post)) do
+          within(selector_for(:post_id, topic.posts.first.id)) do
             click_link("Delete")
           end
           flash_notice!("Your post has been deleted.")
@@ -138,11 +140,13 @@ describe "posts" do
 
         it "cannot delete posts by others" do
           visit forum_topic_path(forum, topic)
-          other_post = topic.posts[1]
+          puts "FIRST #{topic.posts.first.inspect}" 
+          other_post = topic.posts.last
+          puts "OTHER #{other_post.inspect}"
           #sends delete request with the current rack-test logged-in session & follows the redirect
-          Capybara.current_session.driver.submit :delete, topic_post_path(topic, other_post), {}
+          Capybara.current_session.driver.follow :delete, topic_post_path(topic, other_post)
           flash_alert!("You cannot delete a post you do not own.")
-          ::Forem::Post.should exist(other_post.id)
+          ::Forem::Post.find(other_post.id).should be_valid
         end
       end
 
@@ -153,7 +157,7 @@ describe "posts" do
 
         it "topic is deleted if only post" do
           Forem::Topic.count.should == 1
-          within(selector_for(:first_post)) do
+          within(selector_for(:post_id, topic.posts.first.id)) do
             click_link("Delete")
           end
           Forem::Topic.count.should == 0
