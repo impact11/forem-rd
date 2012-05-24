@@ -7,7 +7,6 @@ module Forem
       end
 
       def update
-        puts "PARAMS #{params.inspect}"
         @topic.subject  = params[:topic][:subject]
         @topic.pinned   = params[:topic][:pinned]
         @topic.locked   = params[:topic][:locked]
