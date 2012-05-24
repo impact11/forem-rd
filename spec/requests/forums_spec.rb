@@ -25,8 +25,9 @@ describe "forums" do
 
     it "lists pinned topics first" do
       # TODO: cleaner way to get at topic subjects on the page?
+      save_and_open_page
       topic_subjects = Nokogiri::HTML(page.body).css(".topics tbody tr .subject").map(&:text)
-      topic_subjects.should == ["PINNED!", "Most Recent", "Unpinned"]
+      topic_subjects.should == ["PINNED!", "Unpinned", "Most Recent"]
     end
 
     it "does not show hidden topics" do
@@ -37,12 +38,12 @@ describe "forums" do
 
     context "when logged in" do
       before do
-        user = Factory(:user)
+        user =FactoryGirl.create(:user)
         sign_in(user)
       end
       it "calls out topics that have been posted to since your last visit, if you've visited" do
         visit forum_topic_path(forum.id, @topic_2)
-        ::Forem::View.last.update_attribute(:updated_at, 1.minute.ago)
+        @topic_2.reload.views.last.update_attribute(:updated_at, 1.minute.ago)
         visit forum_path(forum)
         topic_subjects = Nokogiri::HTML(page.body).css(".topics tbody tr .new_posts")
         topic_subjects.should_not be_empty
