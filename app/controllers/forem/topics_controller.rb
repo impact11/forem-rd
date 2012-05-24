@@ -76,7 +76,6 @@ module Forem
     end
 
     def register_view
-        puts "USER is #{forem_user}"
       @topic.register_view_by(forem_user)
     end
   end

@@ -68,6 +68,7 @@ describe "topics" do
     other_forum #Create a second forum
     visit edit_admin_topic_path(topic)
     select "Forum", :with => "Second Forum"
+
     click_button "Update Topic"
     flash_notice!("This topic has been updated.")
     #Check if we can see the topic in the old forum, the topic should not be there.

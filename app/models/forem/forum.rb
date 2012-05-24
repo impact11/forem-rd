@@ -38,7 +38,7 @@ module Forem
     def views_count(forem_user = nil)
       views = 0   
       self.topics.each do |topic|
-        views += topic.views.where(:topic_id.in => visible_topics(forem_user).map(&:id) ).sum(:count)
+        views += topic.views.where(:topic_id.in => visible_topics(forem_user).map(&:id) ).sum(:count) || 0
       end    
     end
     

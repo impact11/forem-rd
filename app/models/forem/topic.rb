@@ -93,6 +93,7 @@ module Forem
 
     def toggle!(field)
       send "#{field}=", !self.send("#{field}?")
+      self.save
     end
 
     protected

@@ -7,6 +7,7 @@ module Forem
       end
 
       def update
+        puts "PARAMS #{params.inspect}"
         @topic.subject  = params[:topic][:subject]
         @topic.pinned   = params[:topic][:pinned]
         @topic.locked   = params[:topic][:locked]
@@ -14,7 +15,7 @@ module Forem
         @topic.forum_id = params[:topic][:forum_id]
         if @topic.save
           flash[:notice] = t("forem.topic.updated")
-          redirect_to forum_topic_path(@topic.forum, @topic)
+          redirect_to forum_topic_path(@topic.forum_id, @topic.id)
         else
           flash.alert = t("forem.topic.not_updated")
           render :action => "edit"
