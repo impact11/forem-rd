@@ -25,7 +25,6 @@ describe "forums" do
 
     it "lists pinned topics first" do
       # TODO: cleaner way to get at topic subjects on the page?
-      save_and_open_page
       topic_subjects = Nokogiri::HTML(page.body).css(".topics tbody tr .subject").map(&:text)
       topic_subjects.should == ["PINNED!", "Unpinned", "Most Recent"]
     end

@@ -45,7 +45,6 @@ describe 'post permissions' do
 
     it "can't see edit post link" do
       visit forum_topic_path(forum, topic)
-      save_and_open_page
       within(selector_for(:post_id, topic.posts.first.id)) do
           assert_no_link_for!("Edit")
       end
