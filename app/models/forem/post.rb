@@ -12,7 +12,7 @@ module Forem
 
     delegate :forum, :to => :topic
 
-    scope :by_created_at, order_by([[:created_at, :asc]])
+    scope :by_created_at, order_by([[:created_at, :desc], [:_id, :asc]])
 
     validates :text, :presence => true
   	after_create :subscribe_replier

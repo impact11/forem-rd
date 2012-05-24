@@ -126,6 +126,7 @@ describe "posts" do
           end
 
           within(".topic .latest-post") do
+            save_and_open_page
             page.should have_content("other_forem_user")
           end
         end
@@ -140,9 +141,7 @@ describe "posts" do
 
         it "cannot delete posts by others" do
           visit forum_topic_path(forum, topic)
-          puts "FIRST #{topic.posts.first.inspect}" 
           other_post = topic.posts.last
-          puts "OTHER #{other_post.inspect}"
           #sends delete request with the current rack-test logged-in session & follows the redirect
           Capybara.current_session.driver.follow :delete, topic_post_path(topic, other_post)
           flash_alert!("You cannot delete a post you do not own.")
