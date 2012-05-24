@@ -26,7 +26,7 @@ module CapybaraExt
     end
   end
   
-  def selector_for(identifier)
+  def selector_for(identifier, id = nil)
     case identifier
     when :forum_header
       "#forum h2"
@@ -40,6 +40,8 @@ module CapybaraExt
       "#posts .post"
     when :post_user
       "#posts .post .user"
+    when :post_id
+      id ? "#posts #post_#{id}" : "#posts #post_1"
     when :first_post
       "#posts #post_1"
     when :second_post
