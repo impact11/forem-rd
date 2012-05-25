@@ -8,6 +8,7 @@ module Forem
     has_many :topics, :class_name => 'Forem::Topic', :dependent => :destroy
     #has_many :posts, :through => :topics, :dependent => :destroy
     #has_many :views, :through => :topics, :dependent => :destroy
+  
 
     validates :category_id, :presence => true
     validates :title, :presence => true
@@ -46,6 +47,14 @@ module Forem
       posts = Post.where(:topic_id.in => visible_topics(forem_user).map(&:id))
     end
 
+    def count_of_posts
+      topics.inject(0) {|sum, topic| topic.posts.count + sum }    
+    end
+
+    def count_of_views
+      topics.inject(0) {|sum, topic| topic.views.count + sum }    
+    end
+    
     def last_post_for(forem_user)
       last_post = visible_posts(forem_user).order_by([[:created_at, :desc], [:_id, :desc]]).first
       last_post

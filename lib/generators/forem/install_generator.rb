@@ -36,10 +36,10 @@ module Forem
 
         puts "Adding forem_admin migration..."
 
-#        last_migration = Dir[Rails.root + "db/migrate/*.rb"].sort.last.split("/").last
-#        current_migration_number = /^(\d+)_/.match(last_migration)[1]
-#        next_migration_number = current_migration_number.to_i + 1
-#        template "forem_admin_migration.rb", "#{Rails.root}/db/migrate/#{next_migration_number}_add_forem_admin.rb"
+        last_migration = Dir[Rails.root + "db/migrate/*.rb"].sort.last.split("/").last
+        current_migration_number = /^(\d+)_/.match(last_migration)[1]
+        next_migration_number = current_migration_number.to_i + 1
+        template "forem_admin_migration.rb", "#{Rails.root}/db/migrate/#{next_migration_number}_add_forem_admin.rb"
       end
 
       def determine_current_user_helper
@@ -59,9 +59,9 @@ module Forem
 
 }
 
-        inject_into_file("#{Rails.root}/app/controllers/application_controller.rb",
-                         forem_user_method,
-                         :after => "ActionController::Base\n")
+#        inject_into_file("#{Rails.root}/../../app/controllers/application_controller.rb",
+#                         forem_user_method,
+#                         :after => "ActionController::Base\n")
 
       end
 

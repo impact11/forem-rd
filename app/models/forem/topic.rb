@@ -31,6 +31,11 @@ module Forem
       subject
     end
 
+    def toggle!(field)
+      send "#{field}=", !self.send("#{field}?")
+      save :validation => false
+    end
+
     # Cannot use method name lock! because it's reserved by AR::Base
     def lock_topic!
       update_attribute(:locked, true)
@@ -55,7 +60,7 @@ module Forem
     end
 
     def view_for(user)
-      views.all.where(user_id: user.id).first
+      views.where(user_id: user.id).first
     end
 
     # Track when users last viewed topics

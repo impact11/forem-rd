@@ -126,7 +126,6 @@ describe "posts" do
           end
 
           within(".topic .latest-post") do
-            save_and_open_page
             page.should have_content("other_forem_user")
           end
         end

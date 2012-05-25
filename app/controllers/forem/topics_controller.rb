@@ -7,12 +7,14 @@ module Forem
     def show
       if find_topic
         register_view
-        @posts = @topic.posts.page(params[:page]).per(20)
+        @group = Group.where(:forum_id => @forum.id).first 
+        @posts = @topic.posts.latest_first.page(params[:page]).per(20)
       end
     end
 
     def new
       authorize! :create_topic, @forum
+      @group = Group.where(:forum_id => @forum.id).first
       @topic = @forum.topics.build
       @topic.posts.build
     end
@@ -21,7 +23,7 @@ module Forem
       authorize! :create_topic, @forum
       @topic = @forum.topics.build(params[:topic])
       @topic.user = forem_user
-      if @topic.save
+      if @topic.save && @topic.posts.first.save
         flash[:notice] = t("forem.topic.created")
         redirect_to [@forum, @topic]
       else
