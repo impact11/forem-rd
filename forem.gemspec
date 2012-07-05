@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'launchy'
   s.add_development_dependency 'rspec-rails', '~> 2.10.1'
   s.add_development_dependency 'capybara'
-  s.add_development_dependency 'rails', '~> 3.1'
+  s.add_development_dependency 'rails', '~> 3.2'
   s.add_development_dependency 'jquery-rails'
   s.add_development_dependency 'factory_girl_rails', '>= 1.2.0'
   s.add_development_dependency 'database_cleaner'
