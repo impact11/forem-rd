@@ -15,7 +15,7 @@ module Forem
     embeds_many :subscriptions, :class_name => 'Forem::Subscription'
 
     has_many :posts, :class_name => 'Forem::Post', autosave: true
-    accepts_nested_attributes_for :posts, :views
+    accepts_nested_attributes_for :posts, :views, :subscriptions
 
     validates :subject, :presence => true
 
