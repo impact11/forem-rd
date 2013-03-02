@@ -103,11 +103,11 @@ describe "topics" do
       end
 
       context "creating a topic" do
-        it "creates a view" do
+        it "creates a view", create_view: true do
 #          lambda do
             pre_count = 0
             visit forum_topic_path(forum, topic)
-            post_count = topic.views.all.sum(:count)
+            post_count = topic.reload.views.all.sum(:count)
             post_count.should == pre_count + 1
 #          end.should change(topic.views, :count).by(1)
         end
@@ -126,7 +126,7 @@ describe "topics" do
           # 
           # But instead must go long-form:
 
-          view = topic.views.last
+          view = topic.reload.views.last
           view.count.should eql(1)
           visit forum_topic_path(forum, topic)
           view = topic.views.last

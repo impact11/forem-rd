@@ -81,7 +81,8 @@ module Forem
 
     def subscribe_user(user_id)
       if user_id && !subscriber?(user_id)         
-				subscriptions.create!(:subscriber_id => user_id)
+				subscriptions.build(:subscriber_id => user_id)
+				save!
       end
     end
 

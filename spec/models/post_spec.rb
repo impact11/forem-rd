@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Forem::Post do
-  let(:post) { FactoryGirl.create(:post, :topic => stub_model(Forem::Topic)) }
+  let(:post) { FactoryGirl.create(:post, :topic => FactoryGirl.create(:topic)) }
   let(:reply) { FactoryGirl.create(:post, :reply_to => post) }
 
   context "upon deletion" do

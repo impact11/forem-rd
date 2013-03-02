@@ -8,11 +8,11 @@ module Forem
     belongs_to :topic, :class_name => 'Forem::Topic'
     belongs_to :user, :class_name => Forem.user_class.to_s
     belongs_to :reply_to, :class_name => "Forem::Post"
-    has_many :replies, :class_name => "Forem::Post", :dependent => :nullify
+    has_many   :replies, :class_name => "Forem::Post", inverse_of: :reply_to
 
     delegate :forum, :to => :topic
 
-    scope :by_created_at, order_by([[:created_at, :desc], [:_id, :asc]])
+    scope :by_created_at, order_by([[:created_at, :asc], [:_id, :asc]])
     scope :latest_first, order_by([[:created_at, :desc]])
 
     validates :text, :presence => true
