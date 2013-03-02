@@ -18,6 +18,7 @@ module Forem
     validates :text, :presence => true
   	after_create :subscribe_replier
   	after_create :email_topic_subscribers
+    after_create :update_topic
 
     def owner_or_admin?(other_user)
       self.user == other_user || other_user.forem_admin?
@@ -38,5 +39,9 @@ module Forem
   			end
   		end
   	end
+
+    def update_topic
+      self.topic.update_attribute(:latest_post_dt, updated_at)
+    end
   end
 end

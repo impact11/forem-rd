@@ -24,8 +24,8 @@ module Forem
 
     scope :visible, where(:hidden => false)
     scope :by_pinned, order_by([[:pinned, :desc], [:id, :asc]])
-    scope :by_most_recent_post, order_by([['posts.created_at', :desc]])
-    scope :by_pinned_or_most_recent_post, order_by([[:pinned, :desc],['posts.created_at', :desc]])
+    scope :by_most_recent_post, order_by([[:latest_post_dt, :desc]])
+    scope :by_pinned_or_most_recent_post, order_by([[:pinned, :desc],[:latest_post_dt, :desc]])
 
     def to_s
       subject
