@@ -24,6 +24,6 @@ Gem::Specification.new do |s|
   s.add_dependency 'kaminari'
   s.add_dependency 'cancan', '1.6.7'
   s.add_dependency 'forem-redcarpet', '1.0.0'
-  s.add_dependency 'mongoid'
+  s.add_dependency 'mongoid', '~>2.4.12'
   s.add_dependency 'bson_ext'
 end
