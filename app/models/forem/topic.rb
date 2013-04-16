@@ -106,7 +106,7 @@ module Forem
     protected
     def set_first_post_user
       post = self.posts.first
-      post.user = self.user
+      post.user = self.user unless post.user
     end
   end
 end
